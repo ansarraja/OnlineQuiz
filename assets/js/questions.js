@@ -108,43 +108,95 @@ var choiceB = document.querySelector("#B");
 var choiceC = document.querySelector("#C");
 var choiceD = document.querySelector("#D");
 timerElement = document.querySelector("#time");
+var scoreEl = document.querySelector("#final-score");
+var choicesDiv = document.querySelector("#choices");
+var feedBackEl = document.querySelector("#feedback");
 
+var index = 0
+var score = 0
+var lastQuestion = questions.length - 1;
 
 function displayQuestion() {
 
- for (i = 0; i < questions.length; i++) {
-  currentQuestion = questions[i];
-  question.textContent = currentQuestion.question;
-  A.textContent = currentQuestion.A;
-  B.textContent = currentQuestion.B;
-  C.textContent = currentQuestion.C;
-  D.textContent = currentQuestion.D;
-
-  // get and store user answer 
-
+ currentQuestion = questions[index];
+ question.textContent = currentQuestion.question;
+ choiceA.textContent = currentQuestion.A;
+ choiceB.textContent = currentQuestion.B;
+ choiceC.textContent = currentQuestion.C;
+ choiceD.textContent = currentQuestion.D;
+}
+// get and store user answer 
+choicesDiv.addEventListener("click", function (event) {
+ if (event.target === choicesDiv) { 
+  return;
  }
 
+ checkAnswer(event.target.id);
+ console.dir(event.target);
+})
+
+
+function checkAnswer(answer) {
+ if (answer == questions[index].correctOption) {
+  // answer is correct
+  feedBackEl.textContent = "Correct"
+  score++;
+ } else {
+  // answer is wrong
+  feedBackEl.textContent = "Wrong";
+  timePlenty();
+ }
+
+ if (index < lastQuestion) {
+  index++;
+  displayQuestion();
+ } else {
+  // end the quiz and show the score
+  displayScore();
+ }
 }
 
 // The startGame function is called when the start button is clicked
 function startQuiz() {
- timerCount = 100;
+ timerCount = 60;
  // Prevents start button from being clicked when round is in progress
  start.disabled = true;
  document.getElementById("start-screen").style.display = "none";
  document.getElementById("questions").style.display = "block";
- displayQuestion()
- startTimer()
+ displayQuestion();
+ startTimer();
 }
 
 // The setTimer function starts and stops the timer
 function startTimer() {
  // Sets timer
  timer = setInterval(function () {
-  timerCount--;
+  if (timerCount > 0 && index < lastQuestion) {
+   timerCount--;
+  }
+  else {
+   clearInterval(timer);
+   displayScore();
+  }
+
   timerElement.textContent = timerCount;
 
  }, 1000);
+}
+
+function displayScore() {
+ document.getElementById("questions").style.display = "none";
+ document.getElementById("end-screen").style.display = "block";
+ scoreEl.textContent = score;
+}
+ //funtion for 10 sec plenty for wrong answer
+function timePlenty(){
+ if (timerCount > 10) {
+  timerCount = timerCount - 10;
+ }
+ else {
+  timerCount = 0;
+ }
 }
 
 
