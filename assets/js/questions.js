@@ -236,3 +236,4 @@ function storeScore() {
 start.addEventListener("click", startQuiz);
 
 
+
