@@ -1,7 +1,7 @@
 // List of questions
 var questions = [
  {
-  question: "How many days makes a week ?",
+  question: "How many days makes a week?",
   A: "10 days",
   B: "14 days",
   C: "5 days",
@@ -10,7 +10,7 @@ var questions = [
  },
 
  {
-  question: "How many players are allowed on a football pitch ?",
+  question: "How many players are allowed on a football pitch?",
   A: "10 players",
   B: "11 players",
   C: "9 players",
@@ -19,7 +19,7 @@ var questions = [
  },
 
  {
-  question: "How manay hours can be found in a day ?",
+  question: "How manay hours can be found in a day?",
   A: "30 hours",
   B: "38 hours",
   C: "48 hours",
@@ -28,7 +28,7 @@ var questions = [
  },
 
  {
-  question: "Which is the longest river in the world ?",
+  question: "Which is the longest river in the world?",
   A: "River Nile",
   B: "Long River",
   C: "River Niger",
@@ -37,7 +37,7 @@ var questions = [
  },
 
  {
-  question: "Which country is the largest in the world ?",
+  question: "Which country is the largest in the world?",
   A: "Russia",
   B: "Canada",
   C: "Africa",
@@ -46,7 +46,7 @@ var questions = [
  },
 
  {
-  question: "Which of these numbers is an odd number ?",
+  question: "Which of these numbers is an odd number?",
   A: "Ten",
   B: "Twelve",
   C: "Eight",
@@ -64,7 +64,7 @@ var questions = [
  },
 
  {
-  question: "Where is the world tallest building located ?",
+  question: "Where is the world tallest building located?",
   A: "Africa",
   B: "California",
   C: "Dubai",
@@ -73,7 +73,7 @@ var questions = [
  },
 
  {
-  question: "The longest river in the United Kingdom is ?",
+  question: "The longest river in the United Kingdom is?",
   A: "River Severn",
   B: "River Mersey",
   C: "River Trent",
@@ -82,7 +82,7 @@ var questions = [
  },
 
  {
-  question: "Which national team won the football World cup in 2018 ?",
+  question: "Which national team won the football World cup in 2018?",
   A: "England",
   B: "Brazil",
   C: "Germany",
@@ -91,7 +91,7 @@ var questions = [
  },
 
  {
-  question: "Los Angeles is also known as ?",
+  question: "Los Angeles is also known as?",
   A: "Angels City",
   B: "Shining city",
   C: "City of Angels",
@@ -111,10 +111,15 @@ timerElement = document.querySelector("#time");
 var scoreEl = document.querySelector("#final-score");
 var choicesDiv = document.querySelector("#choices");
 var feedBackEl = document.querySelector("#feedback");
+var userInitialsEl = document.querySelector("#initials");
 
-var index = 0
-var score = 0
+
+var index = 0;
+var score = 0;
 var lastQuestion = questions.length - 1;
+var initials = "";
+var storedPlayerHistory = localStorage.getItem("playerHistory");
+var playerHistory = storedPlayerHistory ? JSON.parse(storedPlayerHistory) : [];
 
 function displayQuestion() {
 
@@ -125,9 +130,10 @@ function displayQuestion() {
  choiceC.textContent = currentQuestion.C;
  choiceD.textContent = currentQuestion.D;
 }
+
 // get and store user answer 
 choicesDiv.addEventListener("click", function (event) {
- if (event.target === choicesDiv) { 
+ if (event.target === choicesDiv) {
   return;
  }
 
@@ -135,14 +141,15 @@ choicesDiv.addEventListener("click", function (event) {
  console.dir(event.target);
 })
 
-
 function checkAnswer(answer) {
  if (answer == questions[index].correctOption) {
+
   // answer is correct
   feedBackEl.textContent = "Correct"
   score++;
- } else {
-  // answer is wrong
+ }
+
+ else {  // answer is wrong
   feedBackEl.textContent = "Wrong";
   timePlenty();
  }
@@ -150,16 +157,20 @@ function checkAnswer(answer) {
  if (index < lastQuestion) {
   index++;
   displayQuestion();
- } else {
-  // end the quiz and show the score
+ }
+
+ else {  // end the quiz and show the score
   displayScore();
  }
 }
 
 // The startGame function is called when the start button is clicked
+
 function startQuiz() {
  timerCount = 60;
+
  // Prevents start button from being clicked when round is in progress
+
  start.disabled = true;
  document.getElementById("start-screen").style.display = "none";
  document.getElementById("questions").style.display = "block";
@@ -169,11 +180,12 @@ function startQuiz() {
 
 // The setTimer function starts and stops the timer
 function startTimer() {
- // Sets timer
+
  timer = setInterval(function () {
   if (timerCount > 0 && index < lastQuestion) {
    timerCount--;
   }
+
   else {
    clearInterval(timer);
    displayScore();
@@ -187,10 +199,14 @@ function startTimer() {
 function displayScore() {
  document.getElementById("questions").style.display = "none";
  document.getElementById("end-screen").style.display = "block";
+ var submitBtn = document.querySelector("#submit");
  scoreEl.textContent = score;
+ submitBtn.addEventListener("click", storeScore);
+
 }
- //funtion for 10 sec plenty for wrong answer
-function timePlenty(){
+
+//funtion for 10 sec plenty for wrong answer
+function timePlenty() {
  if (timerCount > 10) {
   timerCount = timerCount - 10;
  }
@@ -199,6 +215,24 @@ function timePlenty(){
  }
 }
 
+//stores items in the localStorage
+function storeScore() {
+ localStorage.setItem("initials", userInitialsEl.value);
+ localStorage.setItem("userScore", score);
+
+ let currentPlayer = {
+  userScore: score,
+  userInitials: userInitialsEl.value,
+ }
+
+ // Add to array
+ playerHistory.push(currentPlayer);
+ console.log(playerHistory);
+ localStorage.setItem("playerHistory", JSON.stringify(playerHistory));
+
+}
 
 // Attach event listener to start button to call startGame function on click
 start.addEventListener("click", startQuiz);
+
+
