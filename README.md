@@ -28,8 +28,17 @@ The following animation demonstrates the application functionality:
 ![Animation of code quiz. Presses button to start quiz. Clicks the button for the answer to each question, displays if answer was correct or incorrect. Quiz finishes and displays high scores. User adds their intials, then clears their intials and starts over.](./assets/08-web-apis-challenge-demo.gif)
 
 ## link to live page 
+https://ansarraja.github.io/OnlineQuiz/
 
 ## Challenges
+- understanding th DOM (document object module)
+- How to store Arrays of objects to local storage.
+- How to Display hide page dynamically
+- How to display questions and record corect answers
+- Record and display high scores 
 
-
-## Learning Material
+## Learning Material used
+https://bitsofco.de/what-exactly-is-the-dom/
+https://bitsofco.de/understanding-the-critical-rendering-path/
+https://techstacker.com/display-javascript-objects-in-html/
+https://stackoverflow.com/questions/10451893/javascript-create-simple-dynamic-array
