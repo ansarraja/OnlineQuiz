@@ -7,16 +7,17 @@ players.sort((a, b) => b.userScore - a.userScore)
 
 console.log(players);
 
+playerHistoryList.innerHTML = "";
+
 for (var i = 0; i < players.length; i++) {
-
- var player = players[i];
-
+ var separator = "  - "
+ var player = players[i].userInitials + separator + players[i].userScore;
  var li = document.createElement("li");
- li.innerHTML = player;
+ li.textContent = player;
  playerHistoryList.appendChild(li);
 }
 
-clearStorage.addEventListener("click", function (evnet) {
+clearStorage.addEventListener("click", function (event) {
  if (event.target === clearStorage) {
   localStorage.clear();
   window.location.reload(true);

@@ -113,7 +113,6 @@ var choicesDiv = document.querySelector("#choices");
 var feedBackEl = document.querySelector("#feedback");
 var userInitialsEl = document.querySelector("#initials");
 
-
 var index = 0;
 var score = 0;
 var lastQuestion = questions.length - 1;
@@ -121,8 +120,22 @@ var initials = "";
 var storedPlayerHistory = localStorage.getItem("playerHistory");
 var playerHistory = storedPlayerHistory ? JSON.parse(storedPlayerHistory) : [];
 
-function displayQuestion() {
+// The startGame function is called when the start button is clicked
 
+function startQuiz() {
+ timerCount = 60;
+
+ // Prevents start button from being clicked when round is in progress
+ start.disabled = true;
+ document.getElementById("start-screen").style.display = "none";
+ document.getElementById("questions").style.display = "block";
+ if (index < lastQuestion) {
+  displayQuestion();
+ }
+ startTimer();
+}
+
+function displayQuestion() {
  currentQuestion = questions[index];
  question.textContent = currentQuestion.question;
  choiceA.textContent = currentQuestion.A;
@@ -154,28 +167,13 @@ function checkAnswer(answer) {
   timePlenty();
  }
 
- if (index < lastQuestion) {
+ if (index >= lastQuestion) {// end the quiz and show the score
+  displayScore();
+ }
+ else {  //continue questions 
   index++;
   displayQuestion();
  }
-
- else {  // end the quiz and show the score
-  displayScore();
- }
-}
-
-// The startGame function is called when the start button is clicked
-
-function startQuiz() {
- timerCount = 60;
-
- // Prevents start button from being clicked when round is in progress
-
- start.disabled = true;
- document.getElementById("start-screen").style.display = "none";
- document.getElementById("questions").style.display = "block";
- displayQuestion();
- startTimer();
 }
 
 // The setTimer function starts and stops the timer
@@ -229,7 +227,6 @@ function storeScore() {
  playerHistory.push(currentPlayer);
  console.log(playerHistory);
  localStorage.setItem("playerHistory", JSON.stringify(playerHistory));
-
 }
 
 // Attach event listener to start button to call startGame function on click
